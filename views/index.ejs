@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quản Lý Sách</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>Quản Lý Loại Sách</h1>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoaiSach">Thêm Loại Sách</button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">id</th>
+          <th scope="col">Mã </th>
+          <th scope="col">Tên Loại Sách</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i = 0; i< loaisachs.length; i++) { %>
+        <tr>
+          <th scope="row"><%=i%></th>
+          <td><%=loaisachs[i].id%></td>
+          <td><%=loaisachs[i].ma_loaisach%></td>
+          <td><%=loaisachs[i].ten_loaisach%></td>
+          <td>
+            <a class="btn btn-danger mr-1" href="/loaisachs/delete/<%=loaisachs[i].ma_loaisach%>">Delete</a>
+            <a class="btn btn-success" href="/loaisachs/update/form/<%=loaisachs[i].ma_loaisach%>" >Update</a</td>
+          </td>
+        </tr>
+                      <!-- Modal create student -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create New Sách</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="/sachs/add" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="">Mã Sách</label>
+                  <input type="text" name="ma_sach" class="form-control" >
+                </div>
+                <div class="form-group">
+                  <label for="">Tên Sách</label>
+                  <input type="text" name="ten_sach" class="form-control"  >
+                </div>
+                <div class="form-group">
+                  <label for="">Năm Sản Xuất</label>
+                  <input type="text" name="namSanXuat" class="form-control"  >
+                </div>
+                <div class="form-group">
+                  <label for="">Tên Loại Sách</label>
+                  <select class="form-control" id="id_loaisach" name="id_loaisach">
+                    <% for(let i = 0; i< loaisachs.length; i++) { %>
+                    <option value="<%= loaisachs[i].ma_loaisach%>"><%= loaisachs[i].ten_loaisach%></option>
+                    <% } %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="">Hình Ảnh</label>
+                  <input type="file" name="hinhAnh" class="form-control-file" id="exampleFormControlFile1">
+              </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <% } %>
+      </tbody>
+    </table>
+
+    <h1>Quản Lý Sách</h1> 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Thêm Sách
+    </button>
+    <% if(sachs.length) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">id</th>
+          <th scope="col">Mã </th>
+          <th scope="col">Tên Sách</th>
+          <th scope="col">Năm sản Xuất</th>
+          <th scope="col">Mã Loại Sách</th>
+          <th scope="col">Hình Ảnh</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i = 0; i< sachs.length; i++) { %>
+        <tr>
+          <th scope="row"><%=i%></th>
+          <td><%= sachs[i].id%></td>
+          <td><%= sachs[i].ma_sach%></td>
+          <td><%= sachs[i].ten_sach%></td>
+          <td><%= sachs[i].namSanXuat%></td>
+          <td><%= sachs[i].id_loaisach%></td>
+          <td><%if(sachs[i].hinhAnh) {%><img style="width: 100px; height: 100px;" class="img-thumbnail" src="<%= sachs[i].hinhAnh%>" alt=""><%}%></td>
+          <td>
+            <a class="btn btn-danger mr-1" href="/sachs/delete/<%=sachs[i].ma_sach%>">Delete</a>
+            <a class="btn btn-success" href="/sachs/update/form/<%=sachs[i].ma_sach%>" >Update</a</td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% } %>
+  <!-- Modal create class -->
+  <div class="modal fade" id="modalLoaiSach" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm Loại Sách</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/loaisachs/add" method="POST">
+            <div class="form-group">
+              <label for="">Mã Loại Sách</label>
+              <input type="text" name="ma_loaisach" class="form-control" >
+            </div>
+            <div class="form-group">
+              <label for="">Tên Loại Sách</label>
+              <input type="text" name="ten_loaisach" class="form-control" >
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
